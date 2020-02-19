@@ -1,7 +1,7 @@
-# Jenkins example for Deepfence Vulnerability Scanner
+# Jenkins example for Deepfence Vulnerability Mapper
 
-This project demonstrates using Deepfence Vulnerability Scanner in Jenkins build pipeline.
-After customer's image is built, Deepfence Vulnerability Scanner is run on the image and results are sent to Deepfence management console for further analysis.
+This project demonstrates using Deepfence Vulnerability Mapper in Jenkins build pipeline.
+After customer's image is built, Deepfence Vulnerability Mapper is run on the image and results are sent to Deepfence management console for further analysis.
 There is also an option to fail the build in case number of vulnerabilities crosses given limit.
 
 | Variable                           | Description                                               |
@@ -11,16 +11,16 @@ There is also an option to fail the build in case number of vulnerabilities cros
 | def fail_cve_score = 140           | Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.  | 
 
 ## Steps
-- Ensure `deepfenceio/deepfence_agent` image is present in the vm where jenkins is installed.
+- Ensure `deepfenceio/deepfence_vulnerability_mapper` image is present in the vm where jenkins is installed.
 ```shell script
-docker pull deepfenceio/deepfence_agent
+docker pull deepfenceio/deepfence_vulnerability_mapper
 ```
 - Add following jenkins stage to your Jenkinsfile
 ```
-stage('Run Deepfence Vulnerability Scanner'){
-    DeepfenceAgent = docker.image("deepfenceio/deepfence_agent:latest")
+stage('Run Deepfence Vulnerability Mapper'){
+    DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:latest")
     try {
-        c = DeepfenceAgent.run("-it --net=host -v /var/run/docker.sock:/var/run/docker.sock -v /var/lib/docker/:/fenced/mnt/host/var/lib/docker/:rw -v /:/fenced/mnt/host/:ro", "-a ${deepfence_mgmt_console_ip} -f audit -t all -i ${full_image_name} -e ${fail_cve_count}")
+        c = DeepfenceAgent.run("-it --rm --net=host -v /var/run/docker.sock:/var/run/docker.sock", "-mgmt-console-ip=${deepfence_mgmt_console_ip} -image-name=${full_image_name} -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score}")
         sh "docker logs -f ${c.id}"
         def out = sh script: "docker inspect ${c.id} --format='{{.State.ExitCode}}'", returnStdout: true
         sh "exit ${out}"
