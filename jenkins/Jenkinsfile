@@ -14,7 +14,7 @@ node {
     }
 
     stage('Run Deepfence Vulnerability Mapper'){
-        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper_ce:latest")
+        DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:latest")
         try {
             c = DeepfenceAgent.run("-it --net=host -v /var/run/docker.sock:/var/run/docker.sock", "-mgmt-console-ip=${deepfence_mgmt_console_ip} -image-name=${full_image_name} -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score}")
             sh "docker logs -f ${c.id}"
