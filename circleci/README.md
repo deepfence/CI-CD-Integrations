@@ -22,6 +22,7 @@ The following [environment variables](https://circleci.com/docs/2.0/env-vars/#se
 | `AWS_ACCOUNT_ID`               | AWS account id. This information is required for deployment.                                   |
 | `AWS_RESOURCE_NAME_PREFIX`     | Prefix that some of the required AWS resources are assumed to have in their names. The value should correspond to the `aws_resource_prefix` variable value in `terraform_setup/terraform.tfvars`.                             |
 | `DEEPFENCE_CONSOLE_IP`         | Deepfence management console ip address                   |
+| `DEEPFENCE_KEY`                | If authentication is enabled in management console, set deepfence key here  |
 | `DEEPFENCE_DOCKER_PASSWORD`    | Deepfence docker hub username                             |
 | `DEEPFENCE_DOCKER_USERNAME`    | Deepfence docker hub password                             |
 | `FAIL_CVE_COUNT`               | Fail the build if number of vulnerabilities found >= this value. Set -1 to pass regardless of vulnerabilities.  |

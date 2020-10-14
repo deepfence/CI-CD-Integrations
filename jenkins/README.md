@@ -7,8 +7,9 @@ There is also an option to fail the build in case number of vulnerabilities cros
 | Variable                           | Description                                               |
 | ---------------------------------- | --------------------------------------------------------- |
 | def deepfence_mgmt_console_ip = '' | Deepfence management console ip address                   |
+| def deepfence_key = ''             | If authentication is enabled in management console, set deepfence key here  |
 | def fail_cve_count = 100           | Fail jenkins build if number of vulnerabilities found >= this value. Set -1 to pass regardless of vulnerabilities.  |
-| def fail_cve_score = 140           | Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.  | 
+| def fail_cve_score = 6             | Fail jenkins build if cumulative CVE score is >= this value (Range: 0 - 10). Set -1 to pass regardless of cve score.  | 
 
 ## Steps
 - Ensure `deepfenceio/deepfence_vulnerability_mapper` image is present in the vm where jenkins is installed.
