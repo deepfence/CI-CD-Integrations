@@ -38,7 +38,7 @@ jobs:
       env:
         DEEPFENCE_CONSOLE_IP: ${{ env.DEEPFENCE_CONSOLE_IP }}
         DEEPFENCE_KEY: ${{ env.GROUP }}
-        FULL_IMAGE_NAME: ${{ env.GROUP }}/${{ env.REPO }}:latest
+        FULL_IMAGE_NAME: ${{ env.GROUP }}/${{ env.REPO }}:${{ github.sha }}
         FAIL_CVE_COUNT: 100 # Fail build if number of vulnerabilities found is >= this number. Set -1 to pass regardless of vulnerabilities.
         FAIL_CVE_SCORE: 8 # Fail build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.
       run: |
