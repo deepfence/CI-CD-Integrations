@@ -16,7 +16,7 @@ There is also an option to fail the build in case number of vulnerabilities cros
 ```shell script
 docker pull deepfenceio/deepfence_vulnerability_mapper
 ```
-- Add following jenkins stage to your Jenkinsfile
+### Scripted Pipeline
 ```
 stage('Run Deepfence Vulnerability Mapper'){
     DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:latest")
@@ -27,6 +27,24 @@ stage('Run Deepfence Vulnerability Mapper'){
         sh "exit ${out}"
     } finally {
         c.stop()
+    }
+}
+```
+### Declarative Pipeline
+```
+stage('Run Deepfence Vulnerability Mapper'){
+    steps {
+        script {
+            DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:latest")
+            try {
+                c = DeepfenceAgent.run("-it --net=host --privileged=true --cpus='0.3' -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-ip='${deepfence_mgmt_console_ip}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet' -mask-cve-ids='${mask_cve_ids}'")
+                sh "docker logs -f ${c.id}"
+                def out = sh script: "docker inspect ${c.id} --format='{{.State.ExitCode}}'", returnStdout: true
+                sh "exit ${out}"
+            } finally {
+                c.stop()
+            }
+        }
     }
 }
 ```
