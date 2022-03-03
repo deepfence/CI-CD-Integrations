@@ -38,9 +38,9 @@ build {
       "docker_config_path=\"$(pwd)/deepfence_docker\"",
       "docker_creds=$(echo -n \"${var.DEEPFENCE_DOCKER_USERNAME}:${var.DEEPFENCE_DOCKER_PASSWORD}\" | base64)",
       "echo \"{\\\"auths\\\":{\\\"https://index.docker.io/v1/\\\":{\\\"auth\\\":\\\"$docker_creds\\\"}}}\" > \"$docker_config_path/config.json\"",
-      "docker --config \"$docker_config_path\" pull deepfenceio/deepfence_vulnerability_mapper:latest",
+      "docker --config \"$docker_config_path\" pull deepfenceio/deepfence_vulnerability_mapper:3.3.20",
       "rm -rf deepfence_docker",
-      "docker run -i --rm --net=host --privileged=true --cpus=\"0.3\" -v /var/run/docker.sock:/var/run/docker.sock:rw deepfenceio/deepfence_vulnerability_mapper:latest -mgmt-console-ip=${var.DEEPFENCE_CONSOLE_IP} -deepfence-key=\"${var.DEEPFENCE_KEY}\" -image-name=\"${var.image_name}:${var.image_tag}\" -fail-cve-count=${var.FAIL_CVE_COUNT} -fail-cve-score=${var.FAIL_CVE_SCORE} -scan-type=\"base,java,python,ruby,php,nodejs,js,dotnet\""
+      "docker run -i --rm --net=host --privileged=true --cpus=\"0.3\" -v /var/run/docker.sock:/var/run/docker.sock:rw deepfenceio/deepfence_vulnerability_mapper:3.3.20 -mgmt-console-ip=${var.DEEPFENCE_CONSOLE_IP} -deepfence-key=\"${var.DEEPFENCE_KEY}\" -image-name=\"${var.image_name}:${var.image_tag}\" -fail-cve-count=${var.FAIL_CVE_COUNT} -fail-cve-score=${var.FAIL_CVE_SCORE} -scan-type=\"base,java,python,ruby,php,nodejs,js,dotnet\""
     ]
   }
 }
