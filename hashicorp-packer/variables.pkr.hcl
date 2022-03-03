@@ -10,7 +10,7 @@ variable "DEEPFENCE_DOCKER_PASSWORD" {
   sensitive = true
 }
 
-variable "DEEPFENCE_CONSOLE_IP" {
+variable "DEEPFENCE_CONSOLE_URL" {
   type      = string
   default   = "127.0.0.1"
   sensitive = false
