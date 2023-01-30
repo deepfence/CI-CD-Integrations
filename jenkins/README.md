@@ -12,14 +12,14 @@ There is also an option to fail the build in case number of vulnerabilities cros
 | def fail_cve_score = 8              | Fail jenkins build if cumulative CVE score is >= this value. Set -1 to pass regardless of cve score.               | 
 
 ## Steps
-- Ensure `deepfenceio/deepfence_vulnerability_mapper:3.4.0` image is present in the vm where jenkins is installed.
+- Ensure `deepfenceio/deepfence_vulnerability_mapper:3.7.2` image is present in the vm where jenkins is installed.
 ```shell script
-docker pull deepfenceio/deepfence_vulnerability_mapper:3.4.0
+docker pull deepfenceio/deepfence_vulnerability_mapper:3.7.2
 ```
 ### Scripted Pipeline
 ```
 stage('Run Deepfence Vulnerability Mapper'){
-    DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:3.4.0")
+    DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:3.7.2")
     try {
         c = DeepfenceAgent.run("-it --net=host --privileged=true -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-url='${deepfence_mgmt_console_url}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet'")
         sh "docker logs -f ${c.id}"
@@ -35,7 +35,7 @@ stage('Run Deepfence Vulnerability Mapper'){
 stage('Run Deepfence Vulnerability Mapper'){
     steps {
         script {
-            DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:3.4.0")
+            DeepfenceAgent = docker.image("deepfenceio/deepfence_vulnerability_mapper:3.7.2")
             try {
                 c = DeepfenceAgent.run("-it --net=host --privileged=true -v /var/run/docker.sock:/var/run/docker.sock:rw", "-mgmt-console-url='${deepfence_mgmt_console_url}' -image-name='${full_image_name}' -deepfence-key='${deepfence_key}' -fail-cve-count=${fail_cve_count} -fail-cve-score=${fail_cve_score} -scan-type='base,java,python,ruby,php,nodejs,js,dotnet' -mask-cve-ids='${mask_cve_ids}'")
                 sh "docker logs -f ${c.id}"
